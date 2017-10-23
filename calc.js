@@ -178,6 +178,13 @@ let evalOps = (ops) => {
 			opObj.operation = "strl";
 			return opObj;
 		}
+
+		// INV10
+		if (op === "inv10" || op === "INV10") {
+			opObj.operation = "inv10";
+			return opObj;
+		}
+
 	});
 
 	newOps.forEach((op) => {
@@ -229,54 +236,54 @@ let getNS = (op, num, ops) => {
 		break;
 
 		case "put":
-			return num + "" + operand;
+			return Number(num).toString() + "" + operand;
 		break;
 
 		case "fn":
-			return num.toString().replaceAll(op.num1, op.num2);
+			return Number(num.toString().replaceAll(op.num1, op.num2)).toString();
 		break;
 
 		case "<<":
-			return (Math.floor(num/10)).toString();
+			return (Math.floor(Number(num)/10)).toString();
 		break;
 
 		case "opo":
-			return (-1*num).toString();
+			return (-1*Number(num)).toString();
 		break;
 
 		case "sal":
-			return eval(num.toString().replace(/(\d)(?=\d)/g, '$1+')).toString();
+			return Number(eval(Number(num).toString().replace(/(\d)(?=\d)/g, '$1+'))).toString();
 		break;
 
 		case "rev":
 			if ( num >= 0 ) {
-				return num.toString().split('').reverse().join('').toString();
+				return Number(Number(num).toString().split('').reverse().join('')).toString();
 			} else {
-				return (-1*(-1*num).toString().split('').reverse().join('')).toString();
+				return Number(-1*(-1*Number(num)).toString().split('').reverse().join('')).toString();
 			}
 		break;
 
 		case "sh>":
 			if ( num >= 0 ) {
-				return num.toString().split('').rotate(-1).join('').toString();
+				return Number(num.toString().split('').rotate(-1).join('')).toString();
 			} else {
-				return (-1*(-1*num).toString().split('').rotate(-1).join('')).toString();
+				return Number(-1*(-1*num).toString().split('').rotate(-1).join('')).toString();
 			}
 		break;
 
 		case "sh<":
 			if ( num >= 0 ) {
-				return num.toString().split('').rotate(1).join('').toString();
+				return Number(num.toString().split('').rotate(1).join('')).toString();
 			} else {
-				return (-1*(-1*num).toString().split('').rotate(1).join('')).toString();
+				return Number(-1*(-1*num).toString().split('').rotate(1).join('')).toString();
 			}
 		break;
 
 		case "mir":
 			if ( num >= 0 ) {
-				return num.toString() + num.toString().split('').reverse().join('').toString();
+				return Number(num).toString() + Number(num.toString().split('').reverse().join('')).toString();
 			} else {
-				return num.toString() + (-1*(-1*num).toString().split('').reverse().join('')).toString();
+				return Number(num).toString() + Number(-1*(-1*num).toString().split('').reverse().join('')).toString();
 			}
 		break;
 
@@ -294,11 +301,31 @@ let getNS = (op, num, ops) => {
 			return num + (operand ? operand : "");
 		break;
 
+		case "inv10":
+
+			if(num >= 0) {
+				let buf = Number(num).toString().split('');
+				buf = buf.map((number) => {
+					if (number != 0) {
+						return 10 - number;
+					} return number;
+				});
+				return Number(buf.join('')).toString();
+			} else {
+				let buf = (-1*Number(num)).toString().split('');
+				buf = buf.map((number) => {
+					if (number != 0) {
+						return 10 - number;
+					} return number;
+				});
+				return (-1*Number(buf.join(''))).toString();
+			}
+
+		break;
+
 	}
 
 }
-
-let his = [];
 
 function solve(ops, movs, init, final, history = [init]) {
 	let my_ops = arguments[0];
@@ -306,25 +333,34 @@ function solve(ops, movs, init, final, history = [init]) {
 	let my_init = arguments[2];
 	let my_final = arguments[3];
 
+	if (typeof my_ops[0] != "object") {
+		my_ops = evalOps(my_ops);
+	}
+
 	if (my_ops.len === 0) {
 		console.log("No operations!");
 		return;
 	}
 
-	if (typeof my_ops[0] != "object") {
-		my_ops = evalOps(my_ops);
-	}
 
 	if (my_movs === 0) {
 		history.push(my_init);
-		his.push(history.join(' -> '));
 		if (my_init == my_final) {
 			console.log(history.join(' -> '));
+			renderSol(history.join(' ⇒ '));
 		}
 		return my_init;
 	} else {
 		for (let i=0;i<my_ops.length;i++) {
-			if (!(my_ops[i].operation === "strl" && history[history.length-1] === "Store (long hold)")) {
+			let countStr = 0;
+			let countStrl = 0;
+			history.forEach((oper)=> {
+				if (oper === "Store (long hold)")
+					countStrl ++;
+				if (oper === "Store (single click)")
+					countStr ++;
+			});
+			if ((countStrl <= countStr+1)) {
 				let newHistory = history.slice();
 				newHistory.push(my_ops[i].string);
 				let newOps = my_ops.map((val)=>clone(val));

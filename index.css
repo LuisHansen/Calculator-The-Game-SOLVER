@@ -1,0 +1,58 @@
+body {
+	background-color: rgb(255, 249, 196);
+}
+
+#container {
+    width: 70%;
+    margin: auto;
+    margin-top: 2em;
+    border: 1px solid black;
+    padding: 2em;
+    border-radius: 1rem;
+    background-color: white;
+}
+
+#solutionBox {
+    height: 50%;
+    overflow-y: scroll;
+}
+
+.preform {
+    font-family: monospace;
+    color: red;
+}
+
+.help {
+    margin: 10px;
+    font-size: 1rem;
+}
+
+.item {
+    margin: 5px;
+    font-size: 1.5rem;
+}
+
+input[name="ops"] {
+    width: 100%;
+    margin: 5px 0 5px 0;
+}
+
+.item {}
+
+input[type="text"] {
+    width: 100%;
+    margin: 5px 0 5px 0;
+}
+
+input[type="submit"] {
+    margin: auto;
+}
+
+div#form {
+    width: 100%;
+}
+
+.title {
+    font-size: 2rem;
+    margin: 1rem;
+}

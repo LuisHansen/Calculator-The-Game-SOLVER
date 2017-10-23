@@ -1,0 +1,36 @@
+<head>
+	<meta charset="UTF-8">
+</head>
+
+<script src="calc.js"></script>
+<script src="form.js"></script>
+
+<link rel="stylesheet" href="index.css">
+
+<div id="container">
+	<div class="title">Calculator: the game solver</div>
+	<div id="form">
+		<form onsubmit="return formSolve();">
+			<div class="item">
+				Available operations:<input type="text" name="ops" required>
+			<div class="help">Use the following format, separate operations with a space: <div class="preform">store reverse sum 11=>33 x3 put5</div></div>
+			</div>
+			<div class="item">
+				Moves: <input type="text" name="mov" required>
+			</div>
+			<div class="item">
+				Initial number: <input type="text" name="init" required>
+			</div>
+			<div class="item">
+				Goal: <input type="text" name="final" required>
+			</div>
+			<input type="submit" value="Submit" required>
+		</form>
+	</div>
+	<div id="solutions">
+		<h2>Possible solutions: (it may take a few seconds for moves > 6)</h2>
+		<div id="solutionBox">
+			
+		</div>
+	</div>
+</div>
