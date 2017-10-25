@@ -327,6 +327,22 @@ let getNS = (op, num, ops) => {
 
 }
 
+function resolvePortals(num, portals) {
+	// portals = _ i _ o _
+	while (num.toString().length >= portals.in) {
+		let arr = num.toString().split('');
+		let add = arr.splice((portals.in), 1);
+		if ((Number(arr[portals.out-1]) + Number(add)) >= 10) {
+			arr[portals.out-1] = (Number(arr[portals.out-1]) + Number(add))%10;
+			arr[portals.out-2] = arr[portals.out-2] ? Number(arr[portals.out-2])+1 : 1;
+		} else {
+			arr[portals.out-1] = (Number(arr[portals.out-1]) + Number(add))
+		}
+		num = Number(arr.join(''));
+	}
+	return num;
+}
+
 function solve(ops, movs, init, final, history = [init]) {
 	let my_ops = arguments[0];
 	let my_movs = arguments[1];
