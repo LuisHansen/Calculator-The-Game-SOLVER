@@ -1,0 +1,12 @@
+{
+  "name": "Calculator: The Game solver",
+  "short_name": "Calc solver",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#F44336",
+  "description": "Calculator: The Game solver",
+  "related_applications": [{
+    "platform": "play",
+    "url": "https://play.google.com/store/apps/details?id=com.sm.calculateme"
+  }]
+}

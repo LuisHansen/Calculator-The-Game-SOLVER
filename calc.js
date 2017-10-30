@@ -327,11 +327,33 @@ let getNS = (op, num, ops) => {
 
 }
 
-function solve(ops, movs, init, final, history = [init]) {
+function resolvePortals(num, portals) {
+
+	// portals = _ i _ o _      num = _ W X Y Z
+	//			 4 3 2 1 0			  - 0 1 2 3
+
+	if (num%1 != 0)
+		return num;
+
+	while (num.toString().length-1 >= portals.in) {
+		let arr = num.toString().split('');
+		let add = arr.splice((arr.length-1-portals.in), 1);
+		num = (Number(arr.join(''))+(Number(add)*Math.pow(10,portals.out)));
+	}
+	return num;
+}
+
+function solve(ops, movs, init, final, portals = null, history = [init]) {
+
+	if ((Number(init)%1) != 0) {
+		return;
+	}
+
 	let my_ops = arguments[0];
 	let my_movs = arguments[1];
-	let my_init = arguments[2];
+	let my_init = portals ? resolvePortals(arguments[2], portals) : arguments[2];
 	let my_final = arguments[3];
+
 
 	if (typeof my_ops[0] != "object") {
 		my_ops = evalOps(my_ops);
@@ -341,7 +363,6 @@ function solve(ops, movs, init, final, history = [init]) {
 		console.log("No operations!");
 		return;
 	}
-
 
 	if (my_movs === 0) {
 		history.push(my_init);
@@ -365,7 +386,7 @@ function solve(ops, movs, init, final, history = [init]) {
 				newHistory.push(my_ops[i].string);
 				let newOps = my_ops.map((val)=>clone(val));
 				let nextInit = getNS(my_ops[i], my_init, newOps);
-				solve(newOps, ((my_ops[i].operation === "strl") ? my_movs : my_movs-1), nextInit, my_final, newHistory);
+				solve(newOps, ((my_ops[i].operation === "strl") ? my_movs : my_movs-1), nextInit, my_final, portals, newHistory);
 			}
 		}
 	}
