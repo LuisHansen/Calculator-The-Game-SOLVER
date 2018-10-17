@@ -5,8 +5,8 @@ formSolve = () => {
 	mov = Number(document.querySelector("form").mov.value);
 	init = Number(document.querySelector("form").init.value);
 	final = Number(document.querySelector("form").final.value);
-	portalin = Number(document.querySelector("form").in.value);
-	portalout = Number(document.querySelector("form").out.value);
+	portalin = document.querySelector("form").in.value ? Number(document.querySelector("form").in.value) : null;
+	portalout = document.querySelector("form").in.value ? Number(document.querySelector("form").out.value) : null;
 
 	var linebreak = document.createElement("br");
 	document.querySelector("#solutionBox").append("--------------------");
