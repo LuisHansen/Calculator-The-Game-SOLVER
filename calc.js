@@ -331,6 +331,9 @@ function resolvePortals(num, portals) {
 
 	// portals = _ i _ o _      num = _ W X Y Z
 	//			 4 3 2 1 0			  - 0 1 2 3
+	
+	if (portals.in === portals.out)
+		return num;
 
 	if (num%1 != 0)
 		return num;
